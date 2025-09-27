@@ -3,6 +3,8 @@ import { User } from "../../models/user.js";
 import customErrorHandler from "../../services/CustomErrorHandler.js";
 import bcrypt from 'bcrypt';
 import jwtService from "../../services/jwtService.js";
+import { RefreshToken } from "../../models/refreshToken.js";
+import { REFRESH_SECRET } from "../../config/index.js";
 
 const loginController = {
     async login(req, res, next) {
@@ -32,7 +34,19 @@ const loginController = {
 
             //token
             const access_token = jwtService.sign({_id: user._id, role: user.role})
-            res.json({access_token: access_token});// if login is successful
+             
+            
+            const refresh_token = jwtService.sign({_id: user._id, role: user.role}, '1y', REFRESH_SECRET)
+
+            // database whitelist 
+
+            await RefreshToken.create({token : refresh_token})
+            
+            res.json({
+                access_token: access_token,
+                refresh_token: refresh_token
+
+            });// if login is successful
         } catch (error) {
             return next(error);
         }
