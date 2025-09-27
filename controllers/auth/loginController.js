@@ -31,7 +31,7 @@ const loginController = {
             }
 
             //token
-            const access_token = jwtService.sign({id: user._id, role: user.role})
+            const access_token = jwtService.sign({_id: user._id, role: user.role})
             res.json({access_token: access_token});// if login is successful
         } catch (error) {
             return next(error);
