@@ -3,6 +3,8 @@ import { APP_PORT, DB_URL} from './config/index.js';
 import routes  from './routes/index.js';
 import errorHandler from './middlewares/errorHandler.js';
 import mongoose from 'mongoose';
+import path from 'node:path'
+
 
 const app = express();
 
@@ -19,6 +21,9 @@ db.once('open', function() {
 
 });
 
+//global.appRoot = path.resolve(__dirname);
+
+app.use(express.urlencoded({extended:false}));
 
 app.use(express.json());
 app.use('/api', routes);
