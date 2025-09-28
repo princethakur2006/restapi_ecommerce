@@ -17,11 +17,13 @@ const refreshController = {
         if(error){
             return next(error);
         }
+       
+
 
         // check the refresh token in the database
         let refreshtoken;
         try {
-            await RefreshToken.findOne({
+            refreshtoken = await RefreshToken.findOne({
                 token: req.body.refresh_token
             })
 
